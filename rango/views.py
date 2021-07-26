@@ -6,6 +6,8 @@ from rango.forms import CategoryForm
 from rango.forms import PageForm
 from django.shortcuts import redirect
 from django.urls import reverse
+from rango.forms import UserForm, UserProfileForm
+
 def index(request):
     # Query the database for a list of ALL categories currently stored.
     # Order the categories by the number of likes in descending order.
@@ -105,3 +107,39 @@ def add_page(request, category_name_slug):
             print(form.errors)
     context_dict = {'form': form, 'category': category}
     return render(request, 'rango/add_page.html', context=context_dict)
+
+def register(request):
+
+    registered = False
+    # If it's a HTTP POST, we're interested in processing form data.
+    if request.method == 'POST':
+        # Attempt to grab information from the raw form information.
+        # Note that we make use of both UserForm and UserProfileForm.
+        user_form = UserForm(data=request.POST)
+        profile_form = UserProfileForm(data=request.POST)
+        # If the two forms are valid...
+        if user_form.is_valid() and profile_form.is_valid():
+            # Save the user's form data to the database.
+            user = user_form.save()
+
+            user.set_password(user.password)
+            user.save()
+
+            profile = profile_form.save(commit=False)
+            profile.user = user
+
+            if 'picture' in request.FILES:
+                profile.picture = request.FILES['picture']
+            profile.save()
+            registered = True
+
+        else:
+            print(user_form.errors, profile_form.errors)
+
+    else:
+        user_form = UserForm()
+        profile_form = UserProfileForm()
+    # Render the template depending on the context.
+    return render(request,
+                    'rango/register.html',context =
+                    {'user_form': user_form, 'profile_form': profile_form, 'registered':registered})

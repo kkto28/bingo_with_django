@@ -1,11 +1,11 @@
 {% extends 'rango/base.html' %}
 {% load staticfiles %}
 
-{% block title %}
+{% block title_block %}
     {% if category %}
         {{ category.name }}
     {% else %}
-        Unkown category
+        Unknown Category
     {% endif %}
 {% endblock %}
 

@@ -13,6 +13,8 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.views import View
+from django.utils.decorators import method_decorator
 
 def index(request):
     # Query the database for a list of ALL categories currently stored.
@@ -234,3 +236,17 @@ def visitor_cookie_handler(request):
         request.session['last_visit'] = last_visit_cookie
     # Update/set the visits cookie
     request.session['visits'] = visits
+
+class LikeCategoryView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        category_id = request.GET['category_id']
+        try:
+            category = Category.objects.get(id=int(category_id))
+        except Category.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+        category.likes = category.likes + 1
+        category.save()
+        return HttpResponse(category.likes)

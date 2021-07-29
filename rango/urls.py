@@ -14,4 +14,5 @@ urlpatterns = [
     path('restricted/', views.restricted, name='restricted'),
     path('logout/', views.user_logout, name='logout'),
     path('like_category/', views.LikeCategoryView.as_view(), name='like_category'),
+    path('goto/', views.goto_url, name='goto'),
 ]

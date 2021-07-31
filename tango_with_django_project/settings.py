@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rango',
     'registration', # Add in the registration package
     'social_django',
+    'rolepermissions',
 ]
 
 MIDDLEWARE = [
@@ -160,5 +161,7 @@ LOGIN_REDIRECT_URL = 'rango:index'
 LOGIN_URL = 'auth_login'
 LOGOUT_URL = 'auth_logout'
 
-SOCIAL_AUTH_TWITTER_KEY = 'Jtgbvdrnb8opgJKClJpPDlXj4'
-SOCIAL_AUTH_TWITTER_SECRET = 'w1feeKVk2RlF17KrIZ5LKxrZ1fArpyFXGgCLn5tb4vGw7EPx6X'
+SOCIAL_AUTH_TWITTER_KEY = 'nNt1OcGUulPLTNJzyZd8Qa4W0'
+SOCIAL_AUTH_TWITTER_SECRET = 'K39z3z7DKuko7DezTJf5BFiYFvX7Z0QGO3MRQp0fkpsxVjZpg7'
+
+ROLEPERMISSIONS_MODULE = 'tango_with_django_project.roles'

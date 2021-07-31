@@ -17,6 +17,7 @@ from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from rango.models import UserProfile
+from rolepermissions.decorators import has_role_decorator
 
 def index(request):
     # Query the database for a list of ALL categories currently stored.
@@ -205,6 +206,7 @@ def user_login(request):
         return render(request, 'rango/login.html')
 
 @login_required
+@has_role_decorator('editor')
 def restricted(request):
      return render(request, 'rango/restricted.html')
 
@@ -320,7 +322,7 @@ class ProfileView(View):
             return redirect('rango:profile', user.username)
         else:
             print(form.errors)
-            
+
         context_dict = {'user_profile': user_profile,
         'selected_user': user,
         'form': form}

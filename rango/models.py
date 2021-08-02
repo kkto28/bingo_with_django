@@ -10,6 +10,13 @@ class Category(models.Model):
     likes = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
 
+    #Bingo watch attributes
+    type = models.CharField(max_length=30,default='')
+    description = models.CharField(max_length=500,default='')
+    recommend_buy = models.IntegerField(default=0)
+    url = models.URLField(blank=True)
+    picture = models.ImageField(upload_to='product_images', blank=True)
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Category, self).save(*args, **kwargs)
@@ -28,6 +35,9 @@ class Page(models.Model):
     url = models.URLField()
     views = models.IntegerField(default=0)
 
+    #Bingo watch attributes
+    description = models.CharField(max_length=500,default='')
+
     def __str__(self):
         return self.title
 
@@ -38,5 +48,20 @@ class UserProfile(models.Model):
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
     
+    #Bingo watch attributes
+    background = models.CharField(max_length=500,default='')
+
     def __str__(self):
         return self.user.username
+
+#Bingo watch object
+class Comment(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    content = models.CharField(max_length=500)
+    rating = models.IntegerField(default=0)
+    log_datetime = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.content[0:10]

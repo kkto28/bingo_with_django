@@ -16,7 +16,7 @@ from datetime import datetime
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
-from rango.models import UserProfile
+from rango.models import UserProfile, Comment
 from rolepermissions.decorators import has_role_decorator
 
 def index(request):
@@ -25,16 +25,24 @@ def index(request):
     # Retrieve the top 5 only -- or all if less than 5.
     # Place the list in our context_dict dictionary (with our boldmessage!)
     # that will be passed to the template engine.
-    category_list = Category.objects.order_by('-likes')[:5]
-    pages_list = Page.objects.order_by('-views')[:5]
+    #category_list = Category.objects.order_by('-likes')[:5]
+    #pages_list = Page.objects.order_by('-views')[:5]
     
+    to_buy_category_list = Category.objects.order_by('-recommend_buy')[:5]
+    to_avoid_category_list = Category.objects.order_by('recommend_buy')[:5]
+    comments = Comment.objects.order_by('-log_datetime')[:10]
+    
+
     context_dict = {}
-    context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
-    context_dict['categories'] = category_list
-    context_dict['pages'] = pages_list
+    #context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
+    #context_dict['categories'] = category_list
+    #context_dict['pages'] = pages_list
+    context_dict['to_buy_lst'] = to_buy_category_list
+    context_dict['not_to_buy_lst'] = to_avoid_category_list
+    context_dict['comments'] = comments
 
     # Call the helper function to handle the cookies
-    visitor_cookie_handler(request)
+    #visitor_cookie_handler(request)
 
     # Render the response and send it back!
     response = render(request, 'rango/index.html', context=context_dict)
@@ -87,6 +95,7 @@ def about(request):
     return render(request, 'rango/about.html', context=context_dict)
 
 @login_required
+@has_role_decorator('editor')
 def add_category(request):
     form = CategoryForm()
     # A HTTP POST?
@@ -109,6 +118,7 @@ def add_category(request):
     return render(request, 'rango/add_category.html', {'form': form})
     
 @login_required
+@has_role_decorator('editor')
 def add_page(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
@@ -205,9 +215,7 @@ def user_login(request):
         # blank dictionary object...
         return render(request, 'rango/login.html')
 
-@login_required
-@has_role_decorator('editor')
-def restricted(request):
+def meeteditors(request):
      return render(request, 'rango/restricted.html')
 
 # Use the login_required() decorator to ensure only those logged in can
@@ -327,3 +335,25 @@ class ProfileView(View):
         'selected_user': user,
         'form': form}
         return render(request, 'rango/profile.html', context_dict)
+
+def CatalogueView(request):
+    # Query the database for a list of ALL categories currently stored.
+    # Order the categories by the number of likes in descending order.
+    # Retrieve the top 5 only -- or all if less than 5.
+    # Place the list in our context_dict dictionary (with our boldmessage!)
+    # that will be passed to the template engine.
+    category_list = Category.objects.order_by('-likes')[:5]
+    pages_list = Page.objects.order_by('-views')[:5]
+    
+    context_dict = {}
+    context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
+    context_dict['categories'] = category_list
+    context_dict['pages'] = pages_list
+
+    # Call the helper function to handle the cookies
+    visitor_cookie_handler(request)
+
+    # Render the response and send it back!
+    response = render(request, 'rango/watch_catalogue.html', context=context_dict)
+
+    return response

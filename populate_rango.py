@@ -1,6 +1,6 @@
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                      'kkto_with_django_project.settings')
+                      'tango_with_django_project.settings')
 
 import django
 django.setup()
@@ -35,9 +35,9 @@ def populate():
         {'title':'Flask',
         'url':'http://flask.pocoo.org', 'views': 15} ]
 
-    cats = {'Python': {'pages': python_pages, 'views': 128, 'likes': 64},
-        'Django': {'pages': django_pages, 'views': 64, 'likes': 32},
-        'Other Frameworks': {'pages': other_pages, 'views': 32, 'likes': 16} }
+    cats = {'Rolex 123': {'pages': python_pages, 'type':'luxury', 'description':'wonderful watch', 'views': 128, 'likes': 64},
+        'Tissot 123': {'pages': django_pages, 'type':'luxury', 'description':'luxury', 'views': 64, 'likes': 32},
+        'iWatch 5': {'pages': other_pages, 'type':'sport', 'description':'for sport', 'views': 32, 'likes': 16} }
 
     # If you want to add more categories or pages,
     # add them to the dictionaries above.

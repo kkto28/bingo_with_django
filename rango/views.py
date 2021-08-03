@@ -216,7 +216,7 @@ def user_login(request):
         return render(request, 'rango/login.html')
 
 def meeteditors(request):
-     return render(request, 'rango/restricted.html')
+     return render(request, 'rango/editor.html')
 
 # Use the login_required() decorator to ensure only those logged in can
 # access the view.
@@ -337,23 +337,62 @@ class ProfileView(View):
         return render(request, 'rango/profile.html', context_dict)
 
 def CatalogueView(request):
-    # Query the database for a list of ALL categories currently stored.
-    # Order the categories by the number of likes in descending order.
-    # Retrieve the top 5 only -- or all if less than 5.
-    # Place the list in our context_dict dictionary (with our boldmessage!)
-    # that will be passed to the template engine.
-    category_list = Category.objects.order_by('-likes')[:5]
-    pages_list = Page.objects.order_by('-views')[:5]
+
+    category_list = Category.objects.order_by('-likes')
+    #pages_list = Page.objects.order_by('-views')[:5]
     
     context_dict = {}
-    context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
-    context_dict['categories'] = category_list
-    context_dict['pages'] = pages_list
 
-    # Call the helper function to handle the cookies
-    visitor_cookie_handler(request)
+    context_dict['categories'] = category_list
+    #context_dict['pages'] = pages_list
 
     # Render the response and send it back!
     response = render(request, 'rango/watch_catalogue.html', context=context_dict)
 
     return response
+
+def show_more(request, category_name_slug):
+    # Create a context dictionary which we can pass
+    # to the template rendering engine.
+    context_dict = {}
+    try:
+
+        category = Category.objects.get(slug=category_name_slug)
+        pages = Page.objects.filter(category=category).order_by('-views')
+        comments = Comment.objects.filter(category=category).order_by('-log_datetime')
+
+        context_dict['pages'] = pages
+        context_dict['category'] = category
+        context_dict['comments'] = comments
+
+    except Category.DoesNotExist:
+
+        context_dict['category'] = None
+        context_dict['pages'] = None
+
+    return render(request, 'rango/watch_more.html', context=context_dict)
+
+class PostCommentView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        category_id = request.GET['category_id']
+        comments = request.GET['comments']
+        if 'rating' in request.GET:
+            rating = request.GET['rating']
+        else:
+            rating = '0'
+
+        try:
+            category = Category.objects.get(id=int(category_id))
+            user = User.objects.get(id=request.user.id)
+        except Category.DoesNotExist or User.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+
+        mycomment = Comment.objects.get_or_create(category=category,user=user)[0]
+        mycomment.content = comments
+        mycomment.rating = int(rating)
+        mycomment.save() 
+
+        return HttpResponse(1)

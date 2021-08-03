@@ -18,4 +18,6 @@ urlpatterns = [
     path('register_profile/', views.register_profile, name='register_profile'),
     path('profile/<username>/', views.ProfileView.as_view(), name='profile'),
     path('watch_catalogue/', views.CatalogueView, name='watch_catalogue'),
+    path('watch_more/<slug:category_name_slug>/', views.show_more, name='show_more'),
+    path('post_comment/', views.PostCommentView.as_view(), name='post_comment'),
 ]

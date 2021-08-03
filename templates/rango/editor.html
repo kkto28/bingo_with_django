@@ -1,0 +1,104 @@
+{% extends 'rango/base_landing.html' %}
+{% load staticfiles %}
+{% load rango_template_tags %}
+
+{% block title_block %}Luxury Watch Catalogue{% endblock %}
+
+{% block body_block %}
+
+
+<!-- Custom styles for this template -->
+    
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="{% static 'css/editor.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Yrsa:400,600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class=" text-center py-5 mb-4 new">
+        <div class="container">
+            <h1 class="font-weight-light text-white">Meet the editors</h1>
+        </div>
+    </header>
+    <div class="container ">
+        <div class="row">
+            <div class="col-xl-3 col-md-6 mb-4 ">
+                <div class="card border-0 ">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front"> <img src="{{ MEDIA_URL }}kk.jpg" class="card-img-top" alt="avatar" height = 350>
+                                <div class="card-body text-center ">
+                                    <h5 class="card-title mb-0">Kei Kuan To</h5>
+                                    <div class="card-text text-black-50">Chief Editor</div>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h1 class="person text- ">Kei Kuan To</h1>
+                                <p class="description text-black-50">Kei is a watch enthusiast who loves all kind of watches. His goal is to educate people on the beauty of watch collecting. </p> <a href="https://twitter.com/kkto28" class="fa fa-twitter"></a> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 ">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">  <img src="{{ MEDIA_URL }}sp.jpg" class="card-img-top" alt="avatar" height = 350>
+                                <div class="card-body text-center ">
+                                    <h5 class="card-title mb-0">Subhrajyoti Pradhan</h5>
+                                    <div class="card-text text-black-50">Editor (Luxury Watches)</div>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h1 class="person text- ">Subhrajyoti Pradhan</h1>
+                                <p class="description text-black-50">Subhrajyoti is a watch collector and luxury watch expert. His goal is to educate people on the value of investing in luxury watches.</p> <a href="https://www.facebook.com/subhrojyoti.pradhan/" <a href="https://twitter.com/subhro_alive" class="fa fa-twitter"></a> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 ">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front"> <img src="{{ MEDIA_URL }}tb.jpg" class="card-img-top" alt="avatar" height =350>
+                                <div class="card-body text-center ">
+                                    <h5 class="card-title mb-0">Tianyu Bu</h5>
+                                    <div class="card-text text-black-50">Editor (Smart Watches)</div>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h1 class="person text- ">Tianyu Bu</h1>
+                                <p class="description text-black-50">Tianyu is a technology enthusiast and loves reviewing new smart watches. Her goal is to promote the use of smart watches. </p> <a href="https://twitter.com/BluesAstroid" class="fa fa-twitter"></a> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-0 ">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front"> <img src="{{ MEDIA_URL }}dog.jpg" class="card-img-top" alt="avatar" height = 350>
+                                <div class="card-body text-center ">
+                                    <h5 class="card-title mb-0">Watch Dog</h5>
+                                    <div class="card-text text-black-50">Watch Dog</div>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h1 class="person text- ">Watch Dog</h1>
+                                <p class="description text-black-50"> This is our watch dog who likes looking at watches and spreading love. </p> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+{% endblock %}

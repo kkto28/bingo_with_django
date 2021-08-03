@@ -217,7 +217,7 @@ def user_login(request):
         return render(request, 'rango/login.html')
 
 def meeteditors(request):
-     return render(request, 'rango/restricted.html')
+     return render(request, 'rango/editor.html')
 
 # Use the login_required() decorator to ensure only those logged in can
 # access the view.

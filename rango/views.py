@@ -18,6 +18,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.models import User
 from rango.models import UserProfile, Comment
 from rolepermissions.decorators import has_role_decorator
+from django.http import JsonResponse
 
 def index(request):
     # Query the database for a list of ALL categories currently stored.
@@ -261,6 +262,7 @@ class LikeCategoryView(View):
         except ValueError:
             return HttpResponse(-1)
         category.likes = category.likes + 1
+        category.recommend_buy = category.recommend_buy + 1
         category.save()
         return HttpResponse(category.likes)
 
@@ -384,6 +386,7 @@ class PostCommentView(View):
 
         try:
             category = Category.objects.get(id=int(category_id))
+            category.recommend_buy = category.recommend_buy + int(rating)
             user = User.objects.get(id=request.user.id)
         except Category.DoesNotExist or User.DoesNotExist:
             return HttpResponse(-1)
@@ -394,5 +397,20 @@ class PostCommentView(View):
         mycomment.content = comments
         mycomment.rating = int(rating)
         mycomment.save() 
-
+        category.save()
+        
         return HttpResponse(1)
+
+def prepare_chart_data(request):
+    labels = []
+    data = []
+
+    categories = Category.objects.all().order_by('-name')
+    for category in categories:
+        labels.append(category.name)
+        data.append(category.recommend_buy)
+    
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })

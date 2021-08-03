@@ -20,4 +20,5 @@ urlpatterns = [
     path('watch_catalogue/', views.CatalogueView, name='watch_catalogue'),
     path('watch_more/<slug:category_name_slug>/', views.show_more, name='show_more'),
     path('post_comment/', views.PostCommentView.as_view(), name='post_comment'),
+    path('prepare_chart_data/', views.prepare_chart_data, name='prepare_chart_data'),
 ]

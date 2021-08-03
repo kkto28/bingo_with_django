@@ -1,4 +1,4 @@
-{% extends 'rango/base_landing.html' %}
+{% extends 'rango/base_chart.html' %}
 {% load staticfiles %}
 {% load rango_template_tags %}
 
@@ -15,11 +15,12 @@
                 <div class="col-md-4">
                     <div class="position-sticky" style="top: 2rem;">
                     <div class="p-4 mb-3 bg-light rounded">
-                        <h4 class="fst-italic">Figures</h4>
+                        <h4 class="fst-italic">We use number of likes and the rating on particular watch category to calculate recommend buy index.</h4>
                         <p class="mb-0">
                             <div>
-                                <canvas id="myChart" width="100%" height="100%" ></canvas>
+                                <canvas id="watch_chart" width="100%" height="100%" data-url="{% url 'rango:prepare_chart_data' %}"></canvas>
                             </div>
+ 
                         </p>
                     </div>
             

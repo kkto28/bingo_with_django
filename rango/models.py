@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     
     NAME_MAX_LENGTH = 128
+    DESCRIPTION_MAX_LENGTH = 500
     name = models.CharField(max_length=128, unique=True)
     views = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
@@ -12,7 +13,7 @@ class Category(models.Model):
 
     #Bingo watch attributes
     type = models.CharField(max_length=30,default='')
-    description = models.CharField(max_length=500,default='')
+    description = models.CharField(max_length=DESCRIPTION_MAX_LENGTH ,default='')
     recommend_buy = models.IntegerField(default=0)
     url = models.URLField(blank=True)
     picture = models.ImageField(upload_to='product_images', blank=True)

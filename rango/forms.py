@@ -2,19 +2,30 @@ from django import forms
 from rango.models import Page, Category
 from django.contrib.auth.models import User
 from rango.models import UserProfile
+from django.db import models
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length=Category.NAME_MAX_LENGTH,
-                            help_text="Please enter the category name.")
+                            help_text="Please enter the watch name.")
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
     slug = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+    ##Updating the category form for bingo 
+    type = forms.CharField(help_text="Please enter the watch type.")
+    description = forms.CharField(max_length=Category.DESCRIPTION_MAX_LENGTH ,help_text="Please enter a description for the watch.")
+    recommend_buy = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    url = forms.URLField(max_length=200, help_text="Please enter the URL of the page.")
+    picture = models.ImageField(upload_to='product_images', blank=True)
+
+
+
 
     # An inline class to provide additional information on the form.
     class Meta:
         # Provide an association between the ModelForm and a model
         model = Category
-        fields = ('name',)
+        fields = ('name', 'views', 'likes', 'slug', 'type', 'description', 'recommend_buy','url','picture')
 
 class PageForm(forms.ModelForm):
     title = forms.CharField(max_length=Page.NAME_MAX_LENGTH,
@@ -22,6 +33,9 @@ class PageForm(forms.ModelForm):
     url = forms.URLField(max_length=200,
     help_text="Please enter the URL of the page.")
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    
+
+
 
     class Meta:
         # Provide an association between the ModelForm and a model

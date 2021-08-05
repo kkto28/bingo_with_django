@@ -101,7 +101,7 @@ def add_category(request):
     form = CategoryForm()
     # A HTTP POST?
     if request.method == 'POST':
-        form = CategoryForm(request.POST)
+        form = CategoryForm(request.POST, request.FILES)
         # Have we been provided with a valid form?
         if form.is_valid():
             # Save the new category to the database.
@@ -109,7 +109,8 @@ def add_category(request):
             print(cat, cat.slug)
             # Now that the category is saved, we could confirm this.
             # For now, just redirect the user back to the index view.
-            return redirect('/rango/')
+            return redirect(reverse('rango:show_category',
+                                kwargs={'category_name_slug':cat.slug}))
         else:
             # The supplied form contained errors -
             # just print them to the terminal.
@@ -261,6 +262,8 @@ class LikeCategoryView(View):
             return HttpResponse(-1)
         except ValueError:
             return HttpResponse(-1)
+
+        #logic for recommend buy index calculation
         category.likes = category.likes + 1
         category.recommend_buy = category.recommend_buy + 1
         category.save()

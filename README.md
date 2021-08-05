@@ -16,3 +16,6 @@ As limited time frame for the project, framework is based on Rango and Bootstrap
         editor/editor1234 (editor role)
         peter/peter1234
         david/david1234
+
+3) rango/test_bingo.py for the testing script
+4) website do support twitter login. Corresponding keys in setting file are deleted for security reason & need to be updated manually in order to resume function.  

@@ -269,6 +269,7 @@ class LikeCategoryView(View):
         category.save()
         return HttpResponse(category.likes)
 
+#view count after visited page
 def goto_url(request):
     if request.method == 'GET':
         page_id = request.GET.get('page_id')
@@ -281,11 +282,12 @@ def goto_url(request):
         return redirect(selected_page.url)
     return redirect(reverse('rango:index'))
 
+#support user profile with photo uploaded
 @login_required
 def register_profile(request):
     form = UserProfileForm()
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES)
+        form = UserProfileForm(request.POST, request.FILES) #get image file
         if form.is_valid():
             user_profile = form.save(commit=False)
             user_profile.user = request.user
@@ -297,6 +299,7 @@ def register_profile(request):
     context_dict = {'form': form}
     return render(request, 'rango/profile_registration.html', context_dict)
 
+#implement class to support profile viewing
 class ProfileView(View):
 
     def get_user_details(self, username):
@@ -341,6 +344,8 @@ class ProfileView(View):
         'form': form}
         return render(request, 'rango/profile.html', context_dict)
 
+#Bingo specific logic to support watch catalogue*******
+#page for listing watch categories
 def CatalogueView(request):
 
     category_list = Category.objects.order_by('-likes')
@@ -356,6 +361,7 @@ def CatalogueView(request):
 
     return response
 
+#page for showing individual watch with details
 def show_more(request, category_name_slug):
     # Create a context dictionary which we can pass
     # to the template rendering engine.
@@ -377,6 +383,7 @@ def show_more(request, category_name_slug):
 
     return render(request, 'rango/watch_more.html', context=context_dict)
 
+#ajax call to support comments posting
 class PostCommentView(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -385,10 +392,11 @@ class PostCommentView(View):
         if 'rating' in request.GET:
             rating = request.GET['rating']
         else:
-            rating = '0'
+            rating = '0' #default 0 on rating
 
         try:
             category = Category.objects.get(id=int(category_id))
+            #logic for updating index by rating value
             category.recommend_buy = category.recommend_buy + int(rating)
             user = User.objects.get(id=request.user.id)
         except Category.DoesNotExist or User.DoesNotExist:
@@ -404,14 +412,15 @@ class PostCommentView(View):
         
         return HttpResponse(1)
 
+#ajax call to provide chart data
 def prepare_chart_data(request):
     labels = []
     data = []
 
     categories = Category.objects.all().order_by('-name')
     for category in categories:
-        labels.append(category.name)
-        data.append(category.recommend_buy)
+        labels.append(category.name) #watch name
+        data.append(category.recommend_buy) #buy index
     
     return JsonResponse(data={
         'labels': labels,

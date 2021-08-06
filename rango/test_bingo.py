@@ -1,13 +1,7 @@
 # 
 # Bingo With Django Project Tests
 # By Subhrajyoti Pradhan
-# With assistance from tango with django 2 tests (https://github.com/maxwelld90/tango_with_django_2_code/blob/master/progress_tests/tests_chapter7.py)
-
-# Once this is complete, run $ python manage.py test rango.test_bingo
-# 
-# 
-
-#
+# run $ python manage.py test rango.test_bingo
 
 import os
 import inspect
@@ -20,7 +14,7 @@ from django.forms import fields as django_fields
 FAILURE_HEADER = f"{os.linesep}{os.linesep}{os.linesep}================{os.linesep}TwD TEST FAILURE =({os.linesep}================{os.linesep}"
 FAILURE_FOOTER = f"{os.linesep}"
 
-
+#Testing case 1, 2, 3 to check Category with additional fields for Bingo
 class Category_presence_test(TestCase):
     """
     Do the Form classes exist, and do they contain the correct instance variables?
@@ -70,8 +64,17 @@ class Category_presence_test(TestCase):
             self.assertTrue(expected_field_name in fields.keys(), f"{FAILURE_HEADER}The field '{expected_field_name}' was not found in your CategoryForm implementation. Check you have all required fields, and try again.{FAILURE_FOOTER}")
             self.assertEqual(expected_field, type(fields[expected_field_name]), f"{FAILURE_HEADER}The field '{expected_field_name}' in CategoryForm was not of the expected type '{type(fields[expected_field_name])}'.{FAILURE_FOOTER}")
 
-#The following test has been taken from tests_chapter6.py of the aforementioned github page
+    def test_empty_category(self):
+        """
+        Adds a Category without pages; checks to see what the response is.
+        """
+        category = Category.objects.get_or_create(name='Test Category')
+        response = self.client.get(reverse('rango:show_category', kwargs={'category_name_slug': 'test-category'}))
+        lookup_string = '<strong>No pages currently in category.</strong>'
+        self.assertIn(lookup_string, response.content.decode(), r"Error")
 
+
+#Testing case 4 to check new population script & Category content
 class PopulationScriptTest(TestCase):
     """
     Tests to check if populate script functions
@@ -79,15 +82,13 @@ class PopulationScriptTest(TestCase):
     def setUp(self):
         populate()
     
-    def test_page_objects_have_views(self):
+    def test_watch_description(self):
         """
-        Checks the basic requirement that all pages must have a positive view count.
+        Checks proper content for watch categories.
         """
-        pages = Category.objects.filter()
+        watches = Category.objects.filter()
 
-        for page in pages:
-            self.assertTrue(len(page.description) < 500, f"{FAILURE_HEADER}The page '{page.name}' Please make sure that the description does NOT exceed 500 characters.{FAILURE_FOOTER}")
-
-#The following test had been created by team Bingo
-
-#class AdminAccessTest(TestCase):
+        for watch in watches:
+            self.assertTrue(len(watch.description) < 500, f"{FAILURE_HEADER}The watch catalogue '{watch.name}' Please make sure that the description does NOT exceed 500 characters.{FAILURE_FOOTER}")
+            self.assertTrue(watch.likes > 0, f"{FAILURE_HEADER}The watch catalogue '{watch.name}' Please make sure that number of likes do exist.{FAILURE_FOOTER}")
+            self.assertTrue(watch.views > 0, f"{FAILURE_HEADER}The watch catalogue '{watch.name}' Please make sure that number of view do exist.{FAILURE_FOOTER}")
